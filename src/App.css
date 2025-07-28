@@ -1,0 +1,11 @@
+:root{
+    --color-primario: #0c141c;
+    --color-secundario: #edb417;
+    --texto-secundario: #8e8e8e;
+}
+
+body {
+    font-family: "Roboto", sans-serif;
+    background: radial-gradient(circle, #46121f, #0c141c, #04080c);
+    color: white;
+}
