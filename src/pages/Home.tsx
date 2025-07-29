@@ -3,28 +3,42 @@ import { useMovies } from '../hooks/useMovies';
 import FeaturedBanner from '../components/FeaturedBanner';
 import MovieGrid from '../components/MovieGrid';
 import SearchBar from '../components/SearchBar';
-import { Pagination } from 'rsuite';
+import { HStack, Pagination } from 'rsuite';
+import { useBreakpoint } from '../utils/useBreakpoint';
+import MovieFilters from '../components/MovieFilters';
 
 const Home = () => {
+  const { isXS, isSM } = useBreakpoint();
+  const isMobile = isXS || isSM;
   const [query, setQuery] = React.useState('');
   const [page, setPage] = React.useState(1);
+  const [filters, setFilters] = React.useState({});
+
+  const { data, isLoading, isError } = useMovies({ query, page, ...filters });
 
   const handleSearch = (q: string) => {
     setQuery(q);
-    setPage(1); 
+    setPage(1);
   };
 
-  const { data, isLoading, isError } = useMovies({ query, page });
+  const handleFiltersChange = (filtros: any) => {
+    setFilters(filtros);
+    setPage(1);
+  };
 
   if (isLoading) return <div style={{ color: "#fff" }}>Cargando...</div>;
   if (isError || !data) return <div style={{ color: "#fff" }}>Error cargando películas</div>;
 
-  // TMDB trae: data.page, data.total_pages
   return (
     <>
       <FeaturedBanner movies={data.results} />
-      <SearchBar onSearch={handleSearch} value={query} />
-      <MovieGrid movies={data.results} />
+      
+      <div style={{ margin: '24px auto 0', maxWidth: 1150, display: isMobile ? 'block' : 'flex', justifyContent: 'space-between', alignItems: 'center' }} >
+        <SearchBar onSearch={handleSearch} value={query} />
+        <MovieFilters onChange={handleFiltersChange} />
+      </div>
+       <MovieGrid movies={data.results} />
+
       <div style={{ display: 'flex', justifyContent: 'center', margin: 32 }}>
         <Pagination
           prev
@@ -36,7 +50,7 @@ const Home = () => {
           limit={1}
           activePage={page}
           onChangePage={setPage}
-          maxButtons={7}
+          maxButtons={isXS ? 3 : 7}
           style={{
             background: "transparent",
             color: "#ffb300",

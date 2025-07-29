@@ -45,12 +45,12 @@ const MoviesList: React.FC = () => {
         <section
             style={{
                 minHeight: '65vh',
-                padding: 32,
+                padding: 8,
                 background: 'transparent',
                 marginTop: 42,
             }}
         >
-            <h2 style={{ color: '#ffb300', marginBottom: 32 }}>{title}</h2>
+            <h2 style={{ color: '#ffb300', marginBottom: 32, fontSize: 24, marginLeft: 16 }}>{title}</h2>
             {isLoading && <Loader center content="Cargando películas..." />}
             {isError && (
                 <p style={{ color: 'red', textAlign: 'center' }}>

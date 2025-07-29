@@ -1,11 +1,16 @@
 import React from 'react';
 import MovieCard from './MovieCard';
+import { useBreakpoint } from '../utils/useBreakpoint';
 
 interface MovieGridProps {
   movies: any[];
 }
 
 const MovieGrid: React.FC<MovieGridProps> = ({ movies }) => {
+
+  const { isXS, isSM } = useBreakpoint();
+  const isMobile = isXS || isSM;
+
   if (!movies?.length) {
     return (
       <div
@@ -25,8 +30,8 @@ const MovieGrid: React.FC<MovieGridProps> = ({ movies }) => {
     <div
       style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-        gap: 24,
+        gridTemplateColumns: isMobile ? 'repeat(auto-fit, minmax(150px, 1fr))' :  'repeat(auto-fit, minmax(180px, 1fr))',
+        gap: isMobile ? 18 : 24,
         width: '90%',
         margin: '0 auto',
         padding: '32px 0',

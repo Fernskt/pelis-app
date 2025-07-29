@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from 'rsuite';
 import { useNavigate } from 'react-router-dom';
+import { useBreakpoint } from '../utils/useBreakpoint';
 
 const IMAGE_URL = import.meta.env.VITE_TMDB_IMAGE_URL;
 
@@ -9,6 +10,10 @@ interface FeaturedBannerProps {
 }
 
 const FeaturedBanner: React.FC<FeaturedBannerProps> = ({ movies }) => {
+
+  const { isXS, isSM } = useBreakpoint();
+  const isMobile = isXS || isSM;
+
   const movie = movies && movies.length
     ? movies[Math.floor(Math.random() * movies.length)]
     : null;
@@ -31,14 +36,13 @@ const FeaturedBanner: React.FC<FeaturedBannerProps> = ({ movies }) => {
       }}
     >
       <div style={{ maxWidth: 600 }}>
-        <h1 style={{ fontSize: 42, fontWeight: 700 }}>{movie.title}</h1>
-        <p style={{ fontSize: 20, opacity: 0.9 }}>{movie.overview}</p>
+        <h1 style={{ fontSize: isMobile ? 42 : 58, fontWeight: 800, textTransform: 'uppercase', marginBottom: '24px' }}>{movie.title}</h1>
+        <p style={{ fontSize: isMobile ? 14 : 20, opacity: 0.9, color: 'grey' }}>{movie.overview}</p>
         <p style={{ margin: "14px 0", fontWeight: 500 }}>
           ⭐ {movie.vote_average?.toFixed(1)} / 10 &nbsp;|&nbsp; {movie.release_date?.substring(0, 4)}
         </p>
         <Button
           appearance="primary"
-          color="yellow"
           size="lg"
           style={{ marginTop: 12, fontWeight: 600 }}
           onClick={() => navigate(`/detail/${movie.id}`)}
