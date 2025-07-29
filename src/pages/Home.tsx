@@ -3,7 +3,7 @@ import { useMovies } from '../hooks/useMovies';
 import FeaturedBanner from '../components/FeaturedBanner';
 import MovieGrid from '../components/MovieGrid';
 import SearchBar from '../components/SearchBar';
-import { HStack, Pagination } from 'rsuite';
+import { Pagination } from 'rsuite';
 import { useBreakpoint } from '../utils/useBreakpoint';
 import MovieFilters from '../components/MovieFilters';
 

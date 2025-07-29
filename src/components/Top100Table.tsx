@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Loader, Col } from 'rsuite';
+import { Table, Loader } from 'rsuite';
 import { useTop100Movies } from '../hooks/useTop100Movies';
 import { Link } from 'react-router-dom';
 import ArrowDownIcon from '@rsuite/icons/ArrowDown';
@@ -107,7 +107,7 @@ const Top100Table: React.FC = () => {
                        
                     </HeaderCell>
                     <Cell dataKey="idx" style={{ fontWeight: 700, color: '#fff', background: '#202020' }}>
-                        {(rowData, rowIndex) => rowData.idx}
+                        {(rowData) => rowData.idx}
                     </Cell>
                 </Column>
                 <Column width={80} align="center">

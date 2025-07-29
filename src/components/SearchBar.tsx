@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, Button, InputGroup } from 'rsuite';
+import { Input, InputGroup } from 'rsuite';
 import SearchIcon from '@rsuite/icons/Search';
 import { useBreakpoint } from '../utils/useBreakpoint';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { SelectPicker, TagPicker, Button, InputGroup, Input } from 'rsuite';
+import { SelectPicker, TagPicker, Button } from 'rsuite';
 import { useBreakpoint } from '../utils/useBreakpoint';
 
 const YEARS = Array.from({ length: 2025 - 1950 }, (_, i) => (2024 - i).toString());
@@ -41,7 +41,7 @@ interface MovieFiltersProps {
     loading?: boolean;
 }
 
-const MovieFilters: React.FC<MovieFiltersProps> = ({ onChange, loading }) => {
+const MovieFilters: React.FC<MovieFiltersProps> = ({ onChange }) => {
     const { isXS, isSM } = useBreakpoint();
     const isMobile = isXS || isSM;
     const [year, setYear] = React.useState<string | undefined>();

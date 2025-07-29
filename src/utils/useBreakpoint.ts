@@ -32,7 +32,7 @@ export const useBreakpoint = () => {
 };
 
 export const useBreakpointName = (): 'xs' | 'sm' | 'md' | 'lg' | 'xl' => {
-  const { isXS, isSM, isMD, isLG, isXL } = useBreakpoint();
+  const { isXS, isSM, isMD, isLG } = useBreakpoint();
   if (isXS) return 'xs';
   if (isSM) return 'sm';
   if (isMD) return 'md';
