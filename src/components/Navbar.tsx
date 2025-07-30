@@ -4,6 +4,7 @@ import { Navbar as RsNavbar, Nav, Dropdown } from 'rsuite';
 import { Link } from 'react-router-dom';
 import MenuIcon from '@rsuite/icons/Menu';
 import { useBreakpoint } from '../utils/useBreakpoint';
+import logo from '../assets/logo.svg';
 
 const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = React.useState(false);
@@ -38,19 +39,18 @@ const Navbar: React.FC = () => {
         margin: '0',
       }}
     >
-      <RsNavbar.Brand as={Link} to="/">
-        🎬 <span style={{ fontWeight: 'bold' }}>Pelis Online</span>
+      <RsNavbar.Brand as={Link} to="/" style={{ display: 'flex', alignItems: 'center' }}>
+        <h2 style={{ fontSize: '20px', display: 'flex', alignItems: 'center' }}><img src={logo} alt='moviescope' style={{ marginRight: 8 }} /> Movie<span style={{ fontWeight: '800', color: 'var(--color-secundario)' }}>Scope</span></h2>
       </RsNavbar.Brand>
 
       {isMobile ? (
-        // SOLO menú hamburguesa, sin ningún Nav "desktop"
         <Nav pullRight>
           <Dropdown
-            title={<MenuIcon style={{ fontSize: 18, color: '#ffb300' }} />}
+            title={<MenuIcon style={{ fontSize: 18, color: 'var(--color-secundario)' }} />}
             placement="bottomEnd"
             noCaret
             style={{
-              
+
               background: 'transparent',
               border: 'none',
             }}
@@ -59,16 +59,14 @@ const Navbar: React.FC = () => {
               Tendencias
             </Dropdown.Item>
             <Dropdown.Item as={Link} to="/top100">Top 100</Dropdown.Item>
-            {/* OJO: si GenreDropdown es grande, podrías usarlo como submenu */}
-            <Dropdown.Item>
-              <GenreDropdown />
-            </Dropdown.Item>
-            <Dropdown.Separator />
-            <Dropdown.Item>Iniciar Sesión</Dropdown.Item>
+
+            <GenreDropdown />
+
+            {/*  <Dropdown.Separator /> */}
+            {/* <Dropdown.Item>Iniciar Sesión</Dropdown.Item> */}
           </Dropdown>
         </Nav>
       ) : (
-        // SOLO menú desktop, sin ningún menú hamburguesa ni Dropdown
         <>
           <Nav>
             <GenreDropdown />
@@ -77,9 +75,9 @@ const Navbar: React.FC = () => {
             </Nav.Item>
             <Nav.Item as={Link} to="/top100">Top 100</Nav.Item>
           </Nav>
-          <Nav pullRight>
+          {/* <Nav pullRight>
             <Nav.Item>Iniciar Sesión</Nav.Item>
-          </Nav>
+          </Nav> */}
         </>
       )}
     </RsNavbar>

@@ -3,7 +3,8 @@ import { useParams } from 'react-router-dom';
 import { useMoviesByType, useMoviesByGenre } from '../hooks/useMoviesList';
 import { useGenres } from '../hooks/useGenres';
 import MovieGrid from '../components/MovieGrid';
-import { Loader } from 'rsuite';
+import { Loader, RadioGroup, Radio, Pagination } from 'rsuite';
+import { useBreakpoint } from '../utils/useBreakpoint';
 
 const MOVIE_TYPES: Record<string, string> = {
     popular: 'Populares',
@@ -13,23 +14,37 @@ const MOVIE_TYPES: Record<string, string> = {
     tendencias: 'Tendencias',
 };
 
+const SORT_MAP = {
+    default: 'popularity.desc',
+    rating: 'vote_average.desc',
+    year: 'primary_release_date.desc'
+} as const;
+
 const MoviesList: React.FC = () => {
+    const { isXS, isSM } = useBreakpoint();
+    const isMobile = isXS || isSM;
     const { type, id } = useParams<{ type?: string; id?: string }>();
+    const [order, setOrder] = React.useState<'default' | 'rating' | 'year'>('default');
+    const [page, setPage] = React.useState(1);
+
+    const minVotes = order === 'rating' || order === 'year' ? 500 : undefined;
 
     let moviesQuery;
     let title = 'Películas';
 
-    // Traés TODOS los géneros (cacheados por React Query)
     const { data: genres, isLoading: isLoadingGenres } = useGenres();
 
-    // Si es por tipo (tendencias, popular, etc.)
     if (type) {
-        moviesQuery = useMoviesByType(type === 'tendencias' ? 'popular' : type);
+        moviesQuery = useMoviesByType(
+            type === 'tendencias' ? 'popular' : type,
+            SORT_MAP[order],
+            page,
+            minVotes
+        );
         title = MOVIE_TYPES[type] || 'Películas';
     }
-    // Si es por género
     else if (id) {
-        moviesQuery = useMoviesByGenre(id);
+        moviesQuery = useMoviesByGenre(id, SORT_MAP[order], page, minVotes);
 
         const genreObj = genres?.find((g: any) => String(g.id) === String(id));
         title = isLoadingGenres
@@ -39,7 +54,11 @@ const MoviesList: React.FC = () => {
                 : 'Películas por género';
     }
 
-    const { data: movies, isLoading, isError } = moviesQuery || {};
+    const { data, isLoading, isError } = moviesQuery || {};
+
+    React.useEffect(() => {
+        setPage(1);
+    }, [order, type, id]);
 
     return (
         <section
@@ -50,20 +69,62 @@ const MoviesList: React.FC = () => {
                 marginTop: 42,
             }}
         >
-            <h2 style={{ color: '#ffb300', marginBottom: 32, fontSize: 24, marginLeft: 16 }}>{title}</h2>
+            <div style={{ marginBottom: 16, display: isMobile ? 'block' : 'flex', alignItems: 'center', justifyContent: 'center', gap: 16 }}>
+                <h2 style={{ color: 'var(--color-secundario)', fontSize: 24, marginLeft: 16 }}>{title}</h2>
+                {title !== 'Tendencias' && <RadioGroup
+                    name="order"
+                    inline
+                    appearance="picker"
+                    value={order}
+                    onChange={value => setOrder(value as 'default' | 'rating' | 'year')}
+                    style={{ marginLeft: 16, color: "var(--color-secundario)" }}
+                >
+                    <Radio value="default" style={{ fontWeight: 600, marginRight: 12 }}>Default</Radio>
+                    <Radio value="rating" style={{ fontWeight: 600, marginRight: 12 }}>Mejor puntuada</Radio>
+                    <Radio value="year" style={{ fontWeight: 600 }}>Año (histórico)</Radio>
+                </RadioGroup>}
+            </div>
+
+
             {isLoading && <Loader center content="Cargando películas..." />}
             {isError && (
                 <p style={{ color: 'red', textAlign: 'center' }}>
                     Error al cargar películas.
                 </p>
             )}
-            {!isLoading && !isError && (!movies || movies.length === 0) && (
+            {!isLoading && !isError && (!data || data.results.length === 0) && (
                 <p style={{ color: '#fff', textAlign: 'center' }}>
                     No hay películas para mostrar.
                 </p>
             )}
-            {!isLoading && !isError && movies && (
-                <MovieGrid movies={movies} />
+            {!isLoading && !isError && data && (
+                <>
+                    <MovieGrid movies={data.results} />
+                    <div style={{ display: 'flex', justifyContent: 'center', margin: '36px 0 12px' }}>
+                        <Pagination
+                            prev
+                            next
+                            first
+                            ellipsis
+                            size="md"
+                            total={data.total_pages}
+                            limit={1}
+                            activePage={page}
+                            onChangePage={setPage}
+                            maxButtons={isMobile ? 3 : 7}
+                            style={{
+                                background: "transparent",
+                                color: "var(--color-secundario)",
+                                borderRadius: 12,
+                                fontWeight: 700,
+                                border: 'none',
+                                display: 'flex',
+                                justifyContent: 'center',
+
+                            }}
+                        />
+                    </div>
+                </>
             )}
         </section>
     );

@@ -11,7 +11,7 @@ const { Column, HeaderCell, Cell } = Table;
 const IMAGE_URL = import.meta.env.VITE_TMDB_IMAGE_URL;
 
 const titleCellStyle: React.CSSProperties = {
-    color: '#ffb300', fontWeight: 700, fontSize: 18, textDecoration: 'none'
+    color: 'var(--color-secundario)', fontWeight: 700, fontSize: 18, textDecoration: 'none'
 };
 
 const tableStyle: React.CSSProperties = {
@@ -26,8 +26,8 @@ const tableStyle: React.CSSProperties = {
 
 const sortIcon = (dir: 'asc' | 'desc') =>
     dir === 'asc'
-        ? <ArrowUpIcon style={{ marginLeft: 2, fontSize: 14, color: '#ffb300' }} />
-        : <ArrowDownIcon style={{ marginLeft: 2, fontSize: 14, color: '#ffb300' }} />;
+        ? <ArrowUpIcon style={{ marginLeft: 2, fontSize: 14, color: 'var(--color-secundario)' }} />
+        : <ArrowDownIcon style={{ marginLeft: 2, fontSize: 14, color: 'var(--color-secundario)' }} />;
 
 type OrderBy = 'rank' | 'year' | 'votos' | 'puntaje';
 type OrderDir = 'asc' | 'desc';
@@ -83,7 +83,7 @@ const Top100Table: React.FC = () => {
 
             <Table
                 data={sortedMovies}
-                height={700}
+                loading={isLoading}
                 virtualized
                 rowHeight={ isMobile ? 150 : 110}
                 headerHeight={54}
@@ -91,11 +91,12 @@ const Top100Table: React.FC = () => {
                 hover
                 sortColumn={orderBy}
                 sortType={orderDir}
+                autoHeight
             >
                 <Column width={ isMobile ? 30 : 70} align="center" fixed>
                     <HeaderCell
                         style={{
-                            color: '#ffb300',
+                            color: 'var(--color-secundario)',
                             fontWeight: 700,
                             cursor: 'pointer',
                             background: '#171717',
@@ -112,7 +113,7 @@ const Top100Table: React.FC = () => {
                 </Column>
                 <Column width={80} align="center">
                     <HeaderCell style={{
-                        color: '#ffb300', fontWeight: 700, background: '#171717'
+                        color: 'var(--color-secundario)', fontWeight: 700, background: '#171717'
                     }}>Poster</HeaderCell>
                     <Cell style={{ background: '#202020' }}>
                         {(rowData: any) =>
@@ -126,7 +127,7 @@ const Top100Table: React.FC = () => {
                 </Column>
                 <Column width={340} flexGrow={1}>
                     <HeaderCell style={{
-                        color: '#ffb300', fontWeight: 700, background: '#171717'
+                        color: 'var(--color-secundario)', fontWeight: 700, background: '#171717'
                     }}>Título</HeaderCell>
                     <Cell style={{ background: '#202020' }}>
 
@@ -148,7 +149,7 @@ const Top100Table: React.FC = () => {
                         <Column width={120} align="center" sortable>
                             <HeaderCell
                                 style={{
-                                    color: '#ffb300',
+                                    color: 'var(--color-secundario)',
                                     fontWeight: 700,
                                     cursor: 'pointer',
                                     background: '#171717'
@@ -165,7 +166,7 @@ const Top100Table: React.FC = () => {
                         <Column width={120} align="center">
                             <HeaderCell
                                 style={{
-                                    color: '#ffb300',
+                                    color: 'var(--color-secundario)',
                                     fontWeight: 700,
                                     cursor: 'pointer',
                                     background: '#171717'
@@ -182,7 +183,7 @@ const Top100Table: React.FC = () => {
                         <Column width={120} align="center">
                             <HeaderCell
                                 style={{
-                                    color: '#ffb300',
+                                    color: 'var(--color-secundario)',
                                     fontWeight: 700,
                                     cursor: 'pointer',
                                     background: '#171717'
@@ -198,13 +199,13 @@ const Top100Table: React.FC = () => {
                         </Column>
                         <Column width={120} align="center">
                             <HeaderCell style={{
-                                color: '#ffb300', fontWeight: 700, background: '#171717'
+                                color: 'var(--color-secundario)', fontWeight: 700, background: '#171717'
                             }}>Acción</HeaderCell>
                             <Cell style={{ background: '#202020' }}>
                                 {(rowData: any) =>
                                     <Link to={`/detail/${rowData.id}`}
                                         style={{
-                                            color: '#ffb300', textDecoration: 'underline', fontWeight: 700,
+                                            color: 'var(--color-secundario)', textDecoration: 'underline', fontWeight: 700,
                                             fontSize: 15
                                         }}>
                                         Ver Detalle
@@ -214,14 +215,14 @@ const Top100Table: React.FC = () => {
                         </Column>
                         <Column width={120} align="center">
                             <HeaderCell style={{
-                                color: '#ffb300', fontWeight: 700, background: '#171717'
+                                color: 'var(--color-secundario)', fontWeight: 700, background: '#171717'
                             }}>Ver Trailer</HeaderCell>
                             <Cell style={{ background: '#202020' }}>
                                 {(rowData: any) =>
                                     <a href={`https://www.youtube.com/results?search_query=${encodeURIComponent(rowData.title + ' trailer')}`}
                                         target="_blank" rel="noopener noreferrer"
                                         style={{
-                                            color: '#ffb300', textDecoration: 'underline', fontWeight: 700,
+                                            color: 'var(--color-secundario)', textDecoration: 'underline', fontWeight: 700,
                                             fontSize: 15
                                         }}>
                                         Ver Trailer

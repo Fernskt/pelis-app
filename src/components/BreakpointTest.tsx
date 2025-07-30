@@ -25,7 +25,7 @@ const BreakpointTest: React.FC = () => {
       <div>
         XS: {String(isXS)} | SM: {String(isSM)} | isMobile: {String(isMobile)}
       </div>
-      <div style={{marginTop: 32, color: '#ffb300', fontWeight: 900, fontSize: 40}}>
+      <div style={{marginTop: 32, color: 'var(--color-secundario)', fontWeight: 900, fontSize: 40}}>
         {isMobile ? 'MENÚ HAMBURGUESA' : 'MENÚ DESKTOP'}
       </div>
     </div>

@@ -2,10 +2,14 @@ import React from 'react';
 import { Dropdown } from 'rsuite';
 import { useNavigate } from 'react-router-dom';
 import { useGenres } from '../hooks/useGenres';
+import { useBreakpoint } from '../utils/useBreakpoint';
 
 const excludeGenres = ["Aventura", "Familia", "Fantasía", "Romance", "Película de TV"];
 
 const GenreDropdown: React.FC = () => {
+  const { isXS, isSM } = useBreakpoint();
+  const isMobile = isXS || isSM;
+
   const navigate = useNavigate();
   const { data: genres, isLoading } = useGenres();
 
@@ -21,7 +25,7 @@ const GenreDropdown: React.FC = () => {
     <Dropdown
       title="Géneros"
       trigger="click"
-      placement="bottomStart"
+      placement={isMobile ? "leftStart" : "bottomStart"}
       style={{
         background: "transparent",
         color: "#fff",
@@ -32,7 +36,6 @@ const GenreDropdown: React.FC = () => {
         padding: 0,
       }}
       menuStyle={{
-        background: "#181818",
         borderRadius: 10,
         marginTop: 8,
         boxShadow: "0 4px 16px #0007",
@@ -44,7 +47,7 @@ const GenreDropdown: React.FC = () => {
       {isLoading && (
         <Dropdown.Item
           disabled
-          style={{ color: '#ffb300', fontWeight: 500, padding: 12 }}
+          style={{ color: 'var(--color-secundario)', fontWeight: 500, padding: 12 }}
         >
           Cargando...
         </Dropdown.Item>
@@ -53,7 +56,7 @@ const GenreDropdown: React.FC = () => {
         <Dropdown.Item
           key={genre.id}
           style={{
-            color: '#fff',
+           
             background: 'none',
             fontSize: 16,
             textAlign: 'left',

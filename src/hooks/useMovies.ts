@@ -6,9 +6,9 @@ interface UseMoviesProps {
   page?: number;
   year?: string;
   genres?: number[];
-  director?: string; // Filtrado client-side (opcional)
-  platforms?: string[]; // Filtrado client-side (opcional)
-  title?: string; // Puedes usarlo para búsqueda libre también
+  director?: string; 
+  platforms?: string[]; 
+  title?: string; 
 }
 
 export const useMovies = ({

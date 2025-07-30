@@ -36,7 +36,7 @@ const MovieCard = ({ movie }: { movie: any }) => {
 
   const subtitleStyle = {
     fontSize: isMobile ? '.8rem' : '1rem',
-    color: '#ffb300',
+    color: 'var(--color-secundario)',
     margin: 0,
     letterSpacing: '0.5px',
   } as const;

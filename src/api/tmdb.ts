@@ -18,21 +18,41 @@ export const fetchGenres = async () => {
   return data.genres;
 };
 
+
 // Películas por tipo (popular, top_rated, upcoming, etc)
-export const fetchMoviesByType = async (type: string) => {
-  const { data } = await api.get(`/movie/${type}`);
-  return data.results;
+export const fetchMoviesByType = async (
+  type: string,
+  sortBy?: string,
+  page?: number,
+  minVotes?: number
+) => {
+  const params: any = {};
+  if (sortBy) params.sort_by = sortBy;
+  if (page) params.page = page;
+  if (minVotes) params['vote_count.gte'] = minVotes;
+
+  const { data } = await api.get(`/movie/${type}`, { params });
+  return data;
 };
 
 // Películas por género
-export const fetchMoviesByGenre = async (genreId: string) => {
-  const { data } = await api.get('/discover/movie', {
-    params: { with_genres: genreId }
-  });
-  return data.results;
+export const fetchMoviesByGenre = async (
+  genreId: string,
+  sortBy?: string,
+  page?: number,
+  minVotes?: number
+) => {
+  const params: any = { with_genres: genreId };
+  if (sortBy) params.sort_by = sortBy;
+  if (page) params.page = page;
+  if (minVotes) params['vote_count.gte'] = minVotes;
+
+  const { data } = await api.get('/discover/movie', { params });
+  return data;
 };
 
-// Búsqueda de películas por query
+
+
 export const fetchMoviesBySearch = async (query: string) => {
   const { data } = await api.get('/search/movie', {
     params: { query }
@@ -40,17 +60,14 @@ export const fetchMoviesBySearch = async (query: string) => {
   return data.results;
 };
 
-// Detalle de película
 export const fetchMovieDetail = async (id: string) => {
   const { data } = await api.get(`/movie/${id}`);
   return data;
 };
 
-// Trailers/videos de película
 export const fetchMovieVideos = async (id: string) => {
   const { data } = await api.get(`/movie/${id}/videos`);
   return data.results;
 };
 
-// Exportar también la instancia axios si la necesitás
 export default api;

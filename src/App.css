@@ -9,3 +9,6 @@ body {
     background: radial-gradient(circle, #46121f, #0c141c, #04080c);
     color: white;
 }
+[data-theme="dark"] {
+  --rs-primary-500: #ffb300 !important;
+}

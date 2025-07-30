@@ -1,0 +1,51 @@
+:root,
+[data-theme="dark"] {
+  --rs-primary-50:  #fff8e1 !important;
+  --rs-primary-100: #ffecb3 !important;
+  --rs-primary-200: #ffe082 !important;
+  --rs-primary-300: #ffd54f !important;
+  --rs-primary-400: #ffca28 !important;
+  --rs-primary-500: #ffb300 !important;
+  --rs-primary-600: #ffa000 !important;
+  --rs-primary-700: #ff8f00 !important;
+  --rs-primary-800: #ff6f00 !important;
+  --rs-primary-900: #ff6f00 !important;
+  --rs-primary:     #ffb300 !important;
+  --rs-color-primary: #ffb300 !important;
+  --rs-btn-primary-bg: #ffb300 !important;
+  --rs-btn-primary-hover-bg: #ffa000 !important;
+  --rs-btn-primary-active-bg: #ff8f00 !important;
+  --rs-btn-primary-border: #ffb300 !important;
+  --rs-btn-primary-hover-border: #ffa000 !important;
+  --rs-btn-primary-active-border: #ff8f00 !important;
+  --rs-color-focus: #ffb300 !important;
+  --rs-link-primary-color: #ffb300 !important;
+  --rs-link-primary-hover-color: #ffa000 !important;
+}
+
+/* Opcional: Overriding los .rs-btn-primary si RSuite sigue pintando azul en hover */
+.rs-btn-primary,
+.rs-btn-primary:hover,
+.rs-btn-primary:focus,
+.rs-btn-primary:active {
+  background-color: #ffb300 !important;
+  border-color: #ffb300 !important;
+}
+
+/* Opcional: Link */
+.rs-link,
+.rs-link-primary {
+  color: #ffb300 !important;
+}
+.rs-link-primary:hover {
+  color: #ffa000 !important;
+}
+
+
+
+/* Opcional: DropDown hover (en dark theme) */
+.rs-dropdown-item-active,
+.rs-dropdown-item-hover {
+  background-color: #2b1d04 !important;
+  color: #ffb300 !important;
+}

@@ -37,14 +37,12 @@ const SearchBar: React.FC<SearchBarProps> = ({
       alignItems: isMobile ? 'center' : 'flex-start',
     } as React.CSSProperties,
     input: {
-      background: '#222',
-      color: '#fff',
       fontSize: 14,
       border: 'none',
       outline: 'none',
     } as React.CSSProperties,
     button: {
-      background: '#ffb300',
+      background: 'var(--color-secundario)',
       color: '#181818',
       fontWeight: 700,
       fontSize: 15,
