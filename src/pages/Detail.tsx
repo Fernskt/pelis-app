@@ -3,6 +3,7 @@ import { VStack, Loader, Button, Tag, Text } from 'rsuite';
 import { useMovieDetail } from '../hooks/useMovieDetail';
 import { useMovieTrailer } from '../hooks/useMovieTrailer';
 import { useMovieCredits } from '../hooks/useMovieCredits';
+import { useWatchProviders } from '../hooks/useWatchProviders';
 import { Link } from 'react-router-dom';
 import { useBreakpoint } from '../utils/useBreakpoint';
 
@@ -12,6 +13,22 @@ const Detail: React.FC = () => {
 
 const { isXS, isSM } = useBreakpoint();
 const isMobile = isXS || isSM;
+
+  // Mapeo de plataformas a sus URLs
+  const platformLinks: { [key: number]: string } = {
+    8: 'https://www.netflix.com/ar/',
+    337: 'https://www.disneyplus.com/es-ar',
+    384: 'https://www.max.com/ar/es',
+    119: 'https://www.primevideo.com/',
+    619: 'https://www.starplus.com/es-ar',
+    350: 'https://tv.apple.com/ar',
+    531: 'https://www.paramountplus.com/ar/',
+    283: 'https://www.crunchyroll.com/',
+    386: 'https://www.peacocktv.com/',
+    1899: 'https://www.max.com/ar/es', // HBO Max Argentina
+    2: 'https://tv.apple.com/ar', // Apple TV
+    3: 'https://play.google.com/store/movies',
+  };
 
   // ==== ESTILOS EN OBJETOS ====
   const styles = {
@@ -30,7 +47,7 @@ const isMobile = isXS || isSM;
       backgroundSize: 'cover',
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
-      position: 'relative', // importante para overlays
+      position: 'relative', 
       overflow: 'hidden',
     } as React.CSSProperties),
     content: {
@@ -171,6 +188,37 @@ const isMobile = isXS || isSM;
       textDecoration: 'underline',
       display: 'inline-block',
     },
+    providersSection: {
+      marginTop: 24,
+      padding: 16,
+      backgroundColor: 'rgba(255, 255, 255, 0.05)',
+      borderRadius: 12,
+      border: '1px solid rgba(255, 255, 255, 0.1)',
+    },
+    providersTitle: {
+      color: 'var(--color-secundario)',
+      fontSize: 16,
+      fontWeight: 700,
+      marginBottom: 12,
+    },
+    providersGrid: {
+      display: 'flex',
+      gap: 16,
+      flexWrap: 'wrap' as const,
+      alignItems: 'center',
+    },
+    providerLogo: {
+      width: 50,
+      height: 50,
+      borderRadius: 8,
+      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
+      transition: 'transform 0.2s',
+      cursor: 'pointer',
+    },
+    providerLink: {
+      display: 'block',
+      textDecoration: 'none',
+    },
   };
   // ============================
 
@@ -179,6 +227,7 @@ const isMobile = isXS || isSM;
   const { data: movie, isLoading, isError } = useMovieDetail(id);
   const { data: trailer, isLoading: loadingTrailer } = useMovieTrailer(id);
   const { data: credits } = useMovieCredits(id);
+  const { data: watchProviders } = useWatchProviders(id);
 
   if (!id) {
     return <div style={styles.centered}>ID de película no válido</div>;
@@ -264,7 +313,7 @@ const isMobile = isXS || isSM;
                   <div style={styles.actorsSection}>
                     <div style={styles.actorsTitle}>Reparto Principal</div>
                     <div style={styles.actorsGrid}>
-                      {credits.cast.slice(0, 4).map((actor: any) => (
+                      {credits.cast.slice(0, 8).map((actor: any) => (
                         <Link 
                           key={actor.id} 
                           to={`/actor/${actor.id}`}
@@ -284,6 +333,32 @@ const isMobile = isXS || isSM;
                             <div style={styles.actorCharacter}>{actor.character}</div>
                           </div>
                         </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {watchProviders?.AR?.flatrate && watchProviders.AR.flatrate.length > 0 && (
+                  <div style={styles.providersSection}>
+                    <div style={styles.providersTitle}>Podés verla en:</div>
+                    <div style={styles.providersGrid}>
+                      {watchProviders.AR.flatrate.map((provider: any) => (
+                        <a
+                          key={provider.provider_id}
+                          href={platformLinks[provider.provider_id] || "#"}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={styles.providerLink}
+                          title={provider.provider_name}
+                        >
+                          <img
+                            src={`${IMAGE_URL}/original${provider.logo_path}`}
+                            alt={provider.provider_name}
+                            style={styles.providerLogo}
+                            onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.1)')}
+                            onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+                          />
+                        </a>
                       ))}
                     </div>
                   </div>
