@@ -51,6 +51,50 @@ export const fetchMoviesByGenre = async (
   return data;
 };
 
+// Películas por actor
+export const fetchMoviesByActor = async (
+  actorId: string,
+  sortBy?: string,
+  page?: number,
+  minVotes?: number
+) => {
+  const params: any = { with_cast: actorId };
+  if (sortBy) params.sort_by = sortBy;
+  if (page) params.page = page;
+  if (minVotes) params['vote_count.gte'] = minVotes;
+
+  const { data } = await api.get('/discover/movie', { params });
+  return data;
+};
+
+// Películas por director
+export const fetchMoviesByDirector = async (
+  directorId: string,
+  sortBy?: string,
+  page?: number,
+  minVotes?: number
+) => {
+  const params: any = { with_crew: directorId };
+  if (sortBy) params.sort_by = sortBy;
+  if (page) params.page = page;
+  if (minVotes) params['vote_count.gte'] = minVotes;
+
+  const { data } = await api.get('/discover/movie', { params });
+  return data;
+};
+
+// Obtener información del actor
+export const fetchActorDetail = async (actorId: string) => {
+  const { data } = await api.get(`/person/${actorId}`);
+  return data;
+};
+
+// Obtener información del director
+export const fetchDirectorDetail = async (directorId: string) => {
+  const { data } = await api.get(`/person/${directorId}`);
+  return data;
+};
+
 
 
 export const fetchMoviesBySearch = async (query: string) => {

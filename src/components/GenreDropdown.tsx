@@ -25,23 +25,27 @@ const GenreDropdown: React.FC = () => {
     <Dropdown
       title="Géneros"
       trigger="click"
-      placement={isMobile ? "leftStart" : "bottomStart"}
+      placement={isMobile ? "bottomStart" : "bottomStart"}
       style={{
         background: "transparent",
         color: "#fff",
         fontWeight: 600,
         border: "none",
         fontSize: 16,
-        minWidth: 120,
+        minWidth: isMobile ? '100%' : 120,
         padding: 0,
       }}
       menuStyle={{
-        borderRadius: 10,
-        marginTop: 8,
+        borderRadius: isMobile ? 0 : 10,
+        marginTop: isMobile ? 0 : 8,
         boxShadow: "0 4px 16px #0007",
-        minWidth: 180,
+        minWidth: isMobile ? '100vw' : 180,
+        width: isMobile ? '100vw' : 'auto',
+        left: isMobile ? '0 !important' : undefined,
         zIndex: 1000,
         padding: 0,
+        maxHeight: isMobile ? '70vh' : '80vh',
+        overflowY: 'auto',
       }}
     >
       {isLoading && (
@@ -56,11 +60,11 @@ const GenreDropdown: React.FC = () => {
         <Dropdown.Item
           key={genre.id}
           style={{
-           
             background: 'none',
-            fontSize: 16,
+            fontSize: isMobile ? 18 : 16,
             textAlign: 'left',
-            padding: '6px 18px',
+            padding: isMobile ? '14px 24px' : '6px 18px',
+            borderBottom: isMobile ? '1px solid #ffffff11' : 'none',
           }}
           onClick={() => handleSelect(genre.id)}
         >

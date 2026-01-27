@@ -12,6 +12,6 @@ export const useTop100Movies = () =>
       );
       const responses = await Promise.all(requests);
       const movies = responses.flatMap(res => res.data.results);
-      return movies.slice(0, 100); // sólo 100 por si acaso
+      return movies.slice(0, 100);
     }
   });

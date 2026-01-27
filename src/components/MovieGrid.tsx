@@ -11,7 +11,10 @@ const MovieGrid: React.FC<MovieGridProps> = ({ movies }) => {
   const { isXS, isSM } = useBreakpoint();
   const isMobile = isXS || isSM;
 
-  if (!movies?.length) {
+  // Filtrar películas sin poster
+  const moviesWithPoster = movies?.filter(movie => movie.poster_path) || [];
+
+  if (!moviesWithPoster.length) {
     return (
       <div
         style={{
@@ -37,7 +40,7 @@ const MovieGrid: React.FC<MovieGridProps> = ({ movies }) => {
         padding: '32px 0',
       }}
     >
-      {movies.map((movie) => (
+      {moviesWithPoster.map((movie) => (
         <MovieCard key={movie.id} movie={movie} />
       ))}
     </div>

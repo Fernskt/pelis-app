@@ -19,7 +19,7 @@ const Footer: React.FC = () => {
       <Container>
         <FlexboxGrid justify={isXS ? "center" : "space-between"} align="middle" style={{ flexWrap: "wrap", padding: "0 16px", gap: "16px" }}>
           <FlexboxGrid.Item  style={{ textAlign: isXS ? 'center' : 'left', marginBottom: isXS ? 14 : 0 }}>
-            <strong style={{ color: "var(--color-secundario)", fontSize: 22 }}>MovieScope</strong>
+            <strong style={{ color: "var(--color-secundario)", fontSize: 22 }}>FilmBase</strong>
             <div style={{ fontSize: 14, color: "#e1e1e1", marginTop: 2 }}>Descubre, explora y disfruta el mundo del cine.</div>
           </FlexboxGrid.Item>
           <FlexboxGrid.Item style={{ textAlign: "center" }}>
