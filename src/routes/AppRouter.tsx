@@ -5,9 +5,11 @@ import Detail from '../pages/Detail';
 import MoviesList from '../pages/MoviesList';
 import Top100 from '../pages/Top100';
 import About from '../pages/About';
+import ScrollToTop from '../components/ScrollToTop';
 
 const AppRouter = () => (
   <BrowserRouter>
+    <ScrollToTop />
     <Routes>
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
