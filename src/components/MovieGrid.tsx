@@ -11,8 +11,8 @@ const MovieGrid: React.FC<MovieGridProps> = ({ movies }) => {
   const { isXS, isSM } = useBreakpoint();
   const isMobile = isXS || isSM;
 
-  // Filtrar películas sin poster
-  const moviesWithPoster = movies?.filter(movie => movie.poster_path) || [];
+  // Filtrar películas sin poster y con puntaje menor a 1
+  const moviesWithPoster = movies?.filter(movie => movie.poster_path && movie.vote_average >= 1) || [];
 
   if (!moviesWithPoster.length) {
     return (
@@ -35,9 +35,9 @@ const MovieGrid: React.FC<MovieGridProps> = ({ movies }) => {
         display: 'grid',
         gridTemplateColumns: isMobile ? 'repeat(auto-fit, minmax(150px, 1fr))' :  'repeat(auto-fit, minmax(180px, 1fr))',
         gap: isMobile ? 18 : 24,
-        width: '90%',
+        width: isMobile ? '90%' : '95%',
         margin: '0 auto',
-        padding: '32px 0',
+        padding: isMobile ? '32px 0' : '32px',
       }}
     >
       {moviesWithPoster.map((movie) => (

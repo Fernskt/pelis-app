@@ -1,6 +1,7 @@
 import React from 'react';
 import { Container, Divider, FlexboxGrid } from 'rsuite';
 import { FaGithub, FaLinkedin, FaRegEnvelope } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import { useBreakpoint } from '../utils/useBreakpoint';
 
 const Footer: React.FC = () => {
@@ -31,13 +32,13 @@ const Footer: React.FC = () => {
               padding: 0, margin: 0
             }}>
               <li style={{ margin: isXS ? '10px 0' : '0 10px' }}>
-                <a href="#" style={{ color: "var(--color-secundario)", textDecoration: "none", fontWeight: 600 }}>Acerca de</a>
+                <Link to="/about" style={{ color: "var(--color-secundario)", textDecoration: "none", fontWeight: 600 }}>Acerca de</Link>
               </li>
               <li style={{ margin: isXS ? '10px 0' : '0 10px' }}>
-                <a href="#" style={{ color: "var(--color-secundario)", textDecoration: "none", fontWeight: 600 }}>FAQs</a>
+                <Link to="/faqs" style={{ color: "var(--color-secundario)", textDecoration: "none", fontWeight: 600 }}>FAQs</Link>
               </li>
               <li style={{ margin: isXS ? '10px 0' : '0 10px' }}>
-                <a href="#" style={{ color: "var(--color-secundario)", textDecoration: "none", fontWeight: 600 }}>Ayuda</a>
+                <Link to="/help" style={{ color: "var(--color-secundario)", textDecoration: "none", fontWeight: 600 }}>Ayuda</Link>
               </li>
             </ul>
           </FlexboxGrid.Item>

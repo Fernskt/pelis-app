@@ -2,17 +2,19 @@ import React from 'react';
 import { useMovies } from '../hooks/useMovies';
 import FeaturedBanner from '../components/FeaturedBanner';
 import MovieGrid from '../components/MovieGrid';
-import SearchBar from '../components/SearchBar';
 import { Pagination } from 'rsuite';
 import { useBreakpoint } from '../utils/useBreakpoint';
 import MovieFilters from '../components/MovieFilters';
+import { useSearchParams as useRouterSearchParams } from 'react-router-dom';
+import Position from 'rsuite/esm/internals/Overlay/Position';
 
 const Home = () => {
-  const { isXS, isSM } = useBreakpoint();
-  const isMobile = isXS || isSM;
+  const { isXS } = useBreakpoint();
+
+  const [routerParams] = useRouterSearchParams();
 
   const [searchParams, setSearchParams] = React.useState({
-    query: '',
+    query: routerParams.get('q') ?? '',
     page: 1,
     year: undefined,
     genres: undefined,
@@ -21,14 +23,12 @@ const Home = () => {
     title: undefined
   });
 
-  // Cambiadores centralizados
-  const handleSearch = (q: string) =>
-    setSearchParams(prev => ({
-      ...prev,
-      query: q,
-      page: 1
-    }));
+  React.useEffect(() => {
+    const q = routerParams.get('q') ?? '';
+    setSearchParams(prev => ({ ...prev, query: q, page: 1 }));
+  }, [routerParams]);
 
+  // Cambiadores centralizados
   const handleFiltersChange = (filters: any) =>
     setSearchParams(prev => ({
       ...prev,
@@ -51,18 +51,14 @@ const Home = () => {
   return (
     <>
       <FeaturedBanner movies={data.results} />
-
-      <div style={{
-        margin: '24px auto 0',
-        maxWidth: 1150,
-        display: isMobile ? 'block' : 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center'
-      }} >
-        <SearchBar onSearch={handleSearch} value={searchParams.query} />
+{/* 
+      <div style={{ margin: '24px auto 0', maxWidth: 1150, display: 'flex', justifyContent: 'flex-end' }}>
         <MovieFilters onChange={handleFiltersChange} />
+      </div> */}
+      <div style={{ position: 'relative', top: -100, marginBottom: -100 }}>
+         <MovieGrid movies={data.results}/>
       </div>
-      <MovieGrid movies={data.results} />
+     
 
       <div style={{ display: 'flex', justifyContent: 'center', margin: 32 }}>
         <Pagination

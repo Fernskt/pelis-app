@@ -7,12 +7,14 @@ interface SearchBarProps {
   onSearch: (query: string) => void;
   placeholder?: string;
   value?: string;
+  width?: number;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({
   onSearch,
   placeholder = 'Buscar película...',
   value = '',
+  width,
 }) => {
   const { isXS, isSM } = useBreakpoint();
   const isMobile = isXS || isSM;
@@ -22,14 +24,23 @@ const SearchBar: React.FC<SearchBarProps> = ({
     setInput(val);
   };
 
+  const doSearch = () => onSearch(input.trim());
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSearch(input.trim());
+    doSearch();
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      doSearch();
+    }
   };
 
   const styles = {
     wrapper: {
-      maxWidth: 480,
+      maxWidth: width ?? 480,
       padding: 0,
       margin: isMobile ? '0 auto' : '0',
       display: 'flex',
@@ -53,19 +64,22 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   return (
     <form style={styles.wrapper} onSubmit={handleSubmit}>
-      <InputGroup style={{ height: 36, width: isMobile ? '90%' : 480, marginBottom: isMobile ? 16 : 0 }}>
+      <InputGroup style={{ height: 36, width: width ?? (isMobile ? '90%' : 480), marginBottom: isMobile ? 16 : 0 }}>
         <Input
           style={styles.input}
           value={input}
           placeholder={placeholder}
           onChange={handleInput}
+          onKeyDown={handleKeyDown}
           autoComplete="on"
         />
-        <InputGroup.Button style={styles.button}
+        <InputGroup.Button
+          style={styles.button}
           type="submit"
-          appearance="primary">
+          appearance="primary"
+          onClick={(e: React.MouseEvent) => { e.preventDefault(); doSearch(); }}
+        >
           <SearchIcon />
-
         </InputGroup.Button>
       </InputGroup>
     </form>

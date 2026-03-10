@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.svg';
 import ArrowRightIcon from '@rsuite/icons/ArrowRight';
 import ArrowDownIcon from '@rsuite/icons/ArrowDown';
+import SearchBar from './SearchBar';
 
 
 const excludeGenres = ["Aventura", "Familia", "Fantasía", "Romance", "Película de TV"];
@@ -19,6 +20,7 @@ const Navbar: React.FC = () => {
   const { isXS, isSM } = useBreakpoint();
   const isMobile = isXS || isSM;
   const navigate = useNavigate();
+  const handleNavSearch = (q: string) => navigate(q ? `/?q=${encodeURIComponent(q)}` : '/');
   const { data: genres } = useGenres();
 
   const filteredGenres = genres
@@ -77,6 +79,11 @@ const Navbar: React.FC = () => {
               overflowY: 'auto',
             }}
           >
+            <Dropdown.Item panel style={{ padding: '12px 16px', borderBottom: '1px solid #ffffff11' }}>
+              <div onClick={(e) => e.stopPropagation()}>
+                <SearchBar onSearch={handleNavSearch} width={300} />
+              </div>
+            </Dropdown.Item>
             <div
               style={{
                 padding: '14px 24px',
@@ -158,9 +165,11 @@ const Navbar: React.FC = () => {
             </Nav.Item>
             <Nav.Item as={Link} to="/top100">Top 100</Nav.Item>
           </Nav>
-          {/* <Nav pullRight>
-            <Nav.Item>Iniciar Sesión</Nav.Item>
-          </Nav> */}
+          <Nav pullRight style={{ display: 'flex', alignItems: 'center' }}>
+            <Nav.Item panel style={{ padding: '0 12px' }}>
+              <SearchBar onSearch={handleNavSearch} width={500} />
+            </Nav.Item>
+          </Nav>
         </>
       )}
     </RsNavbar>

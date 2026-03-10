@@ -14,8 +14,8 @@ const FeaturedBanner: React.FC<FeaturedBannerProps> = ({ movies }) => {
   const { isXS, isSM } = useBreakpoint();
   const isMobile = isXS || isSM;
 
-  // Filtrar películas con backdrop_path
-  const moviesWithBackdrop = movies?.filter(m => m.backdrop_path) || [];
+  // Filtrar películas con backdrop_path y puntaje >= 1
+  const moviesWithBackdrop = movies?.filter(m => m.backdrop_path && m.vote_average >= 1) || [];
 
   const movie = moviesWithBackdrop.length
     ? moviesWithBackdrop[Math.floor(Math.random() * moviesWithBackdrop.length)]
@@ -31,14 +31,13 @@ const FeaturedBanner: React.FC<FeaturedBannerProps> = ({ movies }) => {
         background: `linear-gradient(to right, #1a1a1aEE 10%, #00000044 100%), url(${IMAGE_URL}/original${movie.backdrop_path}) center/cover no-repeat`,
         color: '#fff',
         padding: '48px 32px',
-        minHeight: '90vh',
         display: 'flex',
         alignItems: 'center',
         position: 'relative',
         overflow: 'hidden'
       }}
     >
-      <div style={{ maxWidth: 600 }}>
+      <div style={{ maxWidth: 600,  margin: '95px 0' }}>
         <h1 style={{ fontSize: isMobile ? 42 : 58, fontWeight: 800, textTransform: 'uppercase', marginBottom: '24px' }}>{movie.title}</h1>
         <p style={{ fontSize: isMobile ? 14 : 20, color: 'var(--texto-secundario)' }}>{movie.overview}</p>
         <p style={{ margin: "14px 0", fontWeight: 500 }}>

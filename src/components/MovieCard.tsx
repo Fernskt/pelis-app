@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { useBreakpoint } from '../utils/useBreakpoint';
 
@@ -8,6 +9,7 @@ const MovieCard = ({ movie }: { movie: any }) => {
 
   const { isXS, isSM } = useBreakpoint();
   const isMobile = isXS || isSM;
+  const [hovered, setHovered] = React.useState(false);
 
   const linkStyle = {
     textDecoration: 'none',
@@ -44,12 +46,15 @@ const MovieCard = ({ movie }: { movie: any }) => {
   const cardStyle = {
     maxWidth: isMobile ? 150 : 180,
     borderRadius: 8,
-    boxShadow: 'rgba(0, 0, 0, 0.75) -2px 2px 28px -10px',
+    boxShadow: hovered
+      ? 'rgba(0, 0, 0, 0.95) -4px 8px 36px -6px'
+      : 'rgba(0, 0, 0, 0.87) -2px 2px 28px -10px',
     paddingBottom: 16,
     display: 'flex',
     flexDirection: 'column' as const,
     alignItems: 'center',
-    transition: 'box-shadow 0.2s',
+    transition: 'transform 0.22s ease, box-shadow 0.22s ease',
+    transform: hovered ? 'scale(1.04)' : 'scale(1)',
     marginBottom: 12,
   } as const;
 
@@ -64,7 +69,11 @@ const MovieCard = ({ movie }: { movie: any }) => {
 
   return (
     <Link to={`/detail/${movie.id}`} style={linkStyle}>
-      <div style={cardStyle}>
+      <div
+        style={cardStyle}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+      >
         <img
           src={`${IMAGE_URL}/w500${movie.poster_path}`}
           alt={movie.title}

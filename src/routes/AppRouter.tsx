@@ -4,6 +4,7 @@ import Home from '../pages/Home';
 import Detail from '../pages/Detail';
 import MoviesList from '../pages/MoviesList';
 import Top100 from '../pages/Top100';
+import About from '../pages/About';
 
 const AppRouter = () => (
   <BrowserRouter>
@@ -18,6 +19,7 @@ const AppRouter = () => (
         <Route path="/country/:countryCode" element={<MoviesList />} />
         <Route path="/year/:year" element={<MoviesList />} />
         <Route path="/top100" element={<Top100 />} />
+        <Route path="/about" element={<About />} />
       </Route>
     </Routes>
   </BrowserRouter>

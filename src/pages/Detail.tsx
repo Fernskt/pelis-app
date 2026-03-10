@@ -266,7 +266,7 @@ const isMobile = isXS || isSM;
 
                 <div style={styles.tagsRow}>
                   {movie.release_date ? (
-                    <Link to={`/year/${movie.release_date.substring(0, 4)}`} style={{ textDecoration: 'none' }}>
+                    <Link to={`/year/${movie.release_date.substring(0, 4)}`} >
                       <Tag color="orange" size="lg" style={{ cursor: 'pointer' }}>
                         {movie.release_date.substring(0, 4)}
                       </Tag>
@@ -302,7 +302,7 @@ const isMobile = isXS || isSM;
                     </Link>
                   ) : <span style={{color: '#fff'}}>Desconocido</span>} </Text>
                   <Text style={styles.tagline}>Compañía: <span style={{color: '#fff'}}> {movie.production_companies[0]?.name || 'Desconocido'}</span></Text>
-                  <Text style={styles.tagline}>Fecha de Estreno: <span style={{color: '#fff'}}>{movie.release_date || 'Desconocido'}</span> </Text>
+                  <Text style={styles.tagline}>Fecha de Estreno: <Link to={`/year/${movie.release_date.substring(0, 4)}`} style={{ textDecoration: 'none' }} ><span style={{ color: '#fff', cursor: 'pointer', textDecoration: 'underline' }}>{movie.release_date || 'Desconocido'}</span> </Link></Text>
                 </VStack>
 
                 {credits?.crew && credits.crew.find((member: any) => member.job === 'Director') && (
