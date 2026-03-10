@@ -168,7 +168,7 @@ const Top100Table: React.FC = () => {
                         {(rowData: any) =>
                             <>
                                 <Link to={`/detail/${rowData.id}`} style={titleCellStyle}>{rowData.title}</Link>
-                                {isMobile && (<p>Año: {rowData.release_date?.substring(0, 4)}</p>)}
+                                {/* {isMobile && (<p>Año: {rowData.release_date?.substring(0, 4)}</p>)} */}
                                 {isMobile && (<p>Puntaje: ⭐ {rowData.vote_average?.toFixed(1)}</p>)}
                                 {isMobile && (<p>Votos: {rowData.vote_count?.toLocaleString()}</p>)}
                                
@@ -177,10 +177,7 @@ const Top100Table: React.FC = () => {
 
                     </Cell>
                 </Column>
-
-                {!isMobile && (
-                    <>
-                        <Column width={120} align="center">
+                <Column width={isMobile ? 60 : 120} align="center">
                             <HeaderCell
                                 style={{
                                     color: 'var(--color-secundario)',
@@ -201,6 +198,9 @@ const Top100Table: React.FC = () => {
                                 {(rowData: any) => rowData.release_date?.substring(0, 4)}
                             </Cell>
                         </Column>
+
+                {!isMobile && (
+                    <>
                         <Column width={120} align="center">
                             <HeaderCell
                                 style={{
