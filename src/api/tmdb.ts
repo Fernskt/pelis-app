@@ -67,6 +67,38 @@ export const fetchMoviesByActor = async (
   return data;
 };
 
+// Películas por país
+export const fetchMoviesByCountry = async (
+  countryCode: string,
+  sortBy?: string,
+  page?: number,
+  minVotes?: number
+) => {
+  const params: any = { with_origin_country: countryCode };
+  if (sortBy) params.sort_by = sortBy;
+  if (page) params.page = page;
+  if (minVotes) params['vote_count.gte'] = minVotes;
+
+  const { data } = await api.get('/discover/movie', { params });
+  return data;
+};
+
+// Películas por año de estreno
+export const fetchMoviesByYear = async (
+  year: string,
+  sortBy?: string,
+  page?: number,
+  minVotes?: number
+) => {
+  const params: any = { primary_release_year: year };
+  if (sortBy) params.sort_by = sortBy;
+  if (page) params.page = page;
+  if (minVotes) params['vote_count.gte'] = minVotes;
+
+  const { data } = await api.get('/discover/movie', { params });
+  return data;
+};
+
 // Películas por director
 export const fetchMoviesByDirector = async (
   directorId: string,

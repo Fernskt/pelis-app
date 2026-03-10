@@ -265,9 +265,15 @@ const isMobile = isXS || isSM;
                 <Text style={styles.subtitle}>{movie.tagline}</Text>
 
                 <div style={styles.tagsRow}>
-                  <Tag color="orange" size="lg">
-                    {movie.release_date?.substring(0, 4)}
-                  </Tag>
+                  {movie.release_date ? (
+                    <Link to={`/year/${movie.release_date.substring(0, 4)}`} style={{ textDecoration: 'none' }}>
+                      <Tag color="orange" size="lg" style={{ cursor: 'pointer' }}>
+                        {movie.release_date.substring(0, 4)}
+                      </Tag>
+                    </Link>
+                  ) : (
+                    <Tag color="orange" size="lg">—</Tag>
+                  )}
                   <Tag color="green" size="lg">
                     ⭐ {movie.vote_average?.toFixed(1)} / 10
                   </Tag>
@@ -290,7 +296,11 @@ const isMobile = isXS || isSM;
                 ))}
                 <br />
                 <VStack spacing={8} style={{ marginTop: 16 }}>
-                  <Text style={styles.tagline}>País: <span style={{color: '#fff'}}>{movie.production_countries[0]?.name || 'Desconocido'}</span> </Text>
+                  <Text style={styles.tagline}>País: {movie.production_countries[0] ? (
+                    <Link to={`/country/${movie.production_countries[0].iso_3166_1}`} state={{ countryName: movie.production_countries[0].name }} style={{ textDecoration: 'none' }}>
+                      <span style={{ color: '#fff', cursor: 'pointer', textDecoration: 'underline' }}>{movie.production_countries[0].name}</span>
+                    </Link>
+                  ) : <span style={{color: '#fff'}}>Desconocido</span>} </Text>
                   <Text style={styles.tagline}>Compañía: <span style={{color: '#fff'}}> {movie.production_companies[0]?.name || 'Desconocido'}</span></Text>
                   <Text style={styles.tagline}>Fecha de Estreno: <span style={{color: '#fff'}}>{movie.release_date || 'Desconocido'}</span> </Text>
                 </VStack>

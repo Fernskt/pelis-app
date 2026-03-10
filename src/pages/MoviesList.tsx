@@ -1,6 +1,6 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
-import { useMoviesByType, useMoviesByGenre, useMoviesByActor, useActorDetail, useMoviesByDirector, useDirectorDetail } from '../hooks/useMoviesList';
+import { useParams, useLocation } from 'react-router-dom';
+import { useMoviesByType, useMoviesByGenre, useMoviesByActor, useActorDetail, useMoviesByDirector, useDirectorDetail, useMoviesByCountry, useMoviesByYear } from '../hooks/useMoviesList';
 import { useGenres } from '../hooks/useGenres';
 import MovieGrid from '../components/MovieGrid';
 import { Loader, RadioGroup, Radio, Pagination } from 'rsuite';
@@ -23,7 +23,9 @@ const SORT_MAP = {
 const MoviesList: React.FC = () => {
     const { isXS, isSM } = useBreakpoint();
     const isMobile = isXS || isSM;
-    const { type, id, actorId, directorId } = useParams<{ type?: string; id?: string; actorId?: string; directorId?: string }>();
+    const { type, id, actorId, directorId, countryCode, year } = useParams<{ type?: string; id?: string; actorId?: string; directorId?: string; countryCode?: string; year?: string }>();
+    const location = useLocation();
+    const locationState = location.state as { countryName?: string } | null;
     const [order, setOrder] = React.useState<'default' | 'rating' | 'year'>('default');
     const [page, setPage] = React.useState(1);
 
@@ -71,12 +73,20 @@ const MoviesList: React.FC = () => {
                 ? `Películas de ${director.name}`
                 : 'Películas del director';
     }
+    else if (countryCode) {
+        moviesQuery = useMoviesByCountry(countryCode, SORT_MAP[order], page, minVotes);
+        title = `Películas de ${locationState?.countryName || countryCode}`;
+    }
+    else if (year) {
+        moviesQuery = useMoviesByYear(year, SORT_MAP[order], page, minVotes);
+        title = `Películas de ${year}`;
+    }
 
     const { data, isLoading, isError } = moviesQuery || {};
 
     React.useEffect(() => {
         setPage(1);
-    }, [order, type, id, actorId, directorId]);
+    }, [order, type, id, actorId, directorId, countryCode, year]);
 
     return (
         <section

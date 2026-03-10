@@ -15,6 +15,8 @@ const AppRouter = () => (
         <Route path="/genre/:id" element={<MoviesList />} />
         <Route path="/actor/:actorId" element={<MoviesList />} />
         <Route path="/director/:directorId" element={<MoviesList />} />
+        <Route path="/country/:countryCode" element={<MoviesList />} />
+        <Route path="/year/:year" element={<MoviesList />} />
         <Route path="/top100" element={<Top100 />} />
       </Route>
     </Routes>

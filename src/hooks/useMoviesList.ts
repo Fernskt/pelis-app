@@ -1,6 +1,6 @@
 // hooks/useMoviesList.ts
 import { useQuery } from '@tanstack/react-query';
-import { fetchMoviesByType, fetchMoviesByGenre, fetchMoviesByActor, fetchActorDetail, fetchMoviesByDirector, fetchDirectorDetail } from '../api/tmdb';
+import { fetchMoviesByType, fetchMoviesByGenre, fetchMoviesByActor, fetchActorDetail, fetchMoviesByDirector, fetchDirectorDetail, fetchMoviesByCountry, fetchMoviesByYear } from '../api/tmdb';
 
 export const useMoviesByType = (
   type: string,
@@ -58,4 +58,26 @@ export const useDirectorDetail = (directorId: string | undefined) =>
     queryKey: ['director-detail', directorId],
     queryFn: () => fetchDirectorDetail(directorId!),
     enabled: !!directorId,
+  });
+
+export const useMoviesByCountry = (
+  countryCode: string,
+  sortBy = 'popularity.desc',
+  page = 1,
+  minVotes?: number
+) =>
+  useQuery({
+    queryKey: ['movies-country', countryCode, sortBy, page, minVotes],
+    queryFn: () => fetchMoviesByCountry(countryCode, sortBy, page, minVotes),
+  });
+
+export const useMoviesByYear = (
+  year: string,
+  sortBy = 'popularity.desc',
+  page = 1,
+  minVotes?: number
+) =>
+  useQuery({
+    queryKey: ['movies-year', year, sortBy, page, minVotes],
+    queryFn: () => fetchMoviesByYear(year, sortBy, page, minVotes),
   });
