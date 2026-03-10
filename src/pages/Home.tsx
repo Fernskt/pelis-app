@@ -4,10 +4,10 @@ import FeaturedBanner from '../components/FeaturedBanner';
 import MovieGrid from '../components/MovieGrid';
 import { Pagination } from 'rsuite';
 import { useBreakpoint } from '../utils/useBreakpoint';
-import MovieFilters from '../components/MovieFilters';
-import { useSearchParams as useRouterSearchParams } from 'react-router-dom';
-import Position from 'rsuite/esm/internals/Overlay/Position';
-
+/* import MovieFilters from '../components/MovieFilters';
+ */import { useSearchParams as useRouterSearchParams } from 'react-router-dom';
+/* import Position from 'rsuite/esm/internals/Overlay/Position';
+ */
 const Home = () => {
   const { isXS } = useBreakpoint();
 
@@ -29,12 +29,12 @@ const Home = () => {
   }, [routerParams]);
 
   // Cambiadores centralizados
-  const handleFiltersChange = (filters: any) =>
+/*   const handleFiltersChange = (filters: any) =>
     setSearchParams(prev => ({
       ...prev,
       ...filters,
       page: 1
-    }));
+    })); */
 
   const handlePageChange = (page: number) =>
     setSearchParams(prev => ({
