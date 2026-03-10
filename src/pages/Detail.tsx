@@ -6,6 +6,7 @@ import { useMovieCredits } from '../hooks/useMovieCredits';
 import { useWatchProviders } from '../hooks/useWatchProviders';
 import { Link } from 'react-router-dom';
 import { useBreakpoint } from '../utils/useBreakpoint';
+import Reveal from '../components/Reveal';
 
 const IMAGE_URL = import.meta.env.VITE_TMDB_IMAGE_URL;
 
@@ -319,31 +320,31 @@ const isMobile = isXS || isSM;
                   </div>
                 )}
 
-                {credits?.cast && credits.cast.length > 0 && (
+                {credits?.cast && credits.cast.filter((a: any) => a.profile_path).length > 0 && (
                   <div style={styles.actorsSection}>
                     <div style={styles.actorsTitle}>Reparto Principal</div>
                     <div style={styles.actorsGrid}>
-                      {credits.cast.slice(0, 8).map((actor: any) => (
-                        <Link 
-                          key={actor.id} 
-                          to={`/actor/${actor.id}`}
-                          style={{ textDecoration: 'none' }}
-                        >
-                          <div style={styles.actorCard}>
-                            <img
-                              src={
-                                actor.profile_path
-                                  ? `${IMAGE_URL}/w185${actor.profile_path}`
-                                  : `https://via.placeholder.com/${isMobile ? '80x120' : '100x150'}?text=Sin+Foto`
-                              }
-                              alt={actor.name}
-                              style={styles.actorPhoto}
-                            />
-                            <div style={styles.actorName}>{actor.name}</div>
-                            <div style={styles.actorCharacter}>{actor.character}</div>
-                          </div>
-                        </Link>
-                      ))}
+                      {credits.cast
+                        .filter((actor: any) => actor.profile_path)
+                        .slice(0, 8)
+                        .map((actor: any, index: number) => (
+                          <Reveal key={actor.id} variant="fadeUp" delay={index * 0.07}>
+                            <Link 
+                              to={`/actor/${actor.id}`}
+                              style={{ textDecoration: 'none' }}
+                            >
+                              <div style={styles.actorCard}>
+                                <img
+                                  src={`${IMAGE_URL}/w185${actor.profile_path}`}
+                                  alt={actor.name}
+                                  style={styles.actorPhoto}
+                                />
+                                <div style={styles.actorName}>{actor.name}</div>
+                                <div style={styles.actorCharacter}>{actor.character}</div>
+                              </div>
+                            </Link>
+                          </Reveal>
+                        ))}
                     </div>
                   </div>
                 )}
