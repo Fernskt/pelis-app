@@ -1,5 +1,6 @@
 import React from 'react';
 import MovieCard from './MovieCard';
+import Reveal from './Reveal';
 import { useBreakpoint } from '../utils/useBreakpoint';
 
 interface MovieGridProps {
@@ -40,8 +41,16 @@ const MovieGrid: React.FC<MovieGridProps> = ({ movies }) => {
         padding: isMobile ? '32px 0' : '32px',
       }}
     >
-      {moviesWithPoster.map((movie) => (
-        <MovieCard key={movie.id} movie={movie} />
+      {moviesWithPoster.map((movie, index) => (
+        <Reveal
+          key={movie.id}
+          variant="scaleIn"
+          delay={Math.min(index * 0.06, 0.4)}
+          duration={0.5}
+          inViewOptions={{ threshold: 0.05 }}
+        >
+          <MovieCard movie={movie} />
+        </Reveal>
       ))}
     </div>
   );

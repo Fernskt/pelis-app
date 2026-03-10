@@ -25,6 +25,12 @@ const FeaturedBanner: React.FC<FeaturedBannerProps> = ({ movies }) => {
 
   if (!movie) return null;
 
+  // Helpers de animación de entrada (CSS keyframes, sin librerías)
+  const anim = (name: string, delay: number): React.CSSProperties => ({
+    animation: `${name} 0.65s ease both`,
+    animationDelay: `${delay}s`,
+  });
+
   return (
     <section
       style={{
@@ -34,19 +40,24 @@ const FeaturedBanner: React.FC<FeaturedBannerProps> = ({ movies }) => {
         display: 'flex',
         alignItems: 'center',
         position: 'relative',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        ...anim('fadeIn', 0),
       }}
     >
-      <div style={{ maxWidth: 600,  margin: '95px 0' }}>
-        <h1 style={{ fontSize: isMobile ? 42 : 58, fontWeight: 800, textTransform: 'uppercase', marginBottom: '24px' }}>{movie.title}</h1>
-        <p style={{ fontSize: isMobile ? 14 : 20, color: 'var(--texto-secundario)' }}>{movie.overview}</p>
-        <p style={{ margin: "14px 0", fontWeight: 500 }}>
+      <div style={{ maxWidth: 600, margin: '95px 0' }}>
+        <h1 style={{ fontSize: isMobile ? 42 : 58, fontWeight: 800, textTransform: 'uppercase', marginBottom: '24px', ...anim('fadeUp', 0.1) }}>
+          {movie.title}
+        </h1>
+        <p style={{ fontSize: isMobile ? 14 : 20, color: 'var(--texto-secundario)', ...anim('fadeUp', 0.22) }}>
+          {movie.overview}
+        </p>
+        <p style={{ margin: '14px 0', fontWeight: 500, ...anim('fadeUp', 0.32) }}>
           ⭐ {movie.vote_average?.toFixed(1)} / 10 &nbsp;|&nbsp; {movie.release_date?.substring(0, 4)}
         </p>
         <Button
           appearance="primary"
           size="lg"
-          style={{ marginTop: 12, fontWeight: 600 }}
+          style={{ marginTop: 12, fontWeight: 600, ...anim('fadeUp', 0.42) }}
           onClick={() => navigate(`/detail/${movie.id}`)}
         >
           Ver Detalles
