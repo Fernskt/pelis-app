@@ -23,7 +23,6 @@
   --rs-link-primary-hover-color: #ffa000 !important;
 }
 
-/* Opcional: Overriding los .rs-btn-primary si RSuite sigue pintando azul en hover */
 .rs-btn-primary,
 .rs-btn-primary:hover,
 .rs-btn-primary:focus,

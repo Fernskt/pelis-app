@@ -4,6 +4,8 @@ import { useTop100Movies } from '../hooks/useTop100Movies';
 import { Link } from 'react-router-dom';
 import ArrowDownIcon from '@rsuite/icons/ArrowDown';
 import ArrowUpIcon from '@rsuite/icons/ArrowUp';
+import SortIcon from '@rsuite/icons/Sort';
+
 import { useBreakpoint } from '../utils/useBreakpoint';
 
 const { Column, HeaderCell, Cell } = Table;
@@ -29,20 +31,37 @@ const sortIcon = (dir: 'asc' | 'desc') =>
         ? <ArrowUpIcon style={{ marginLeft: 2, fontSize: 14, color: 'var(--color-secundario)' }} />
         : <ArrowDownIcon style={{ marginLeft: 2, fontSize: 14, color: 'var(--color-secundario)' }} />;
 
-type OrderBy = 'rank' | 'year' | 'votos' | 'puntaje';
+type OrderBy = 'rank' | 'year' | 'votos' | 'puntaje' | 'titulo';
 type OrderDir = 'asc' | 'desc';
 
+interface MovieWithIndex {
+    idx: number;
+    id: number;
+    title: string;
+    poster_path: string;
+    release_date?: string;
+    vote_count: number;
+    vote_average: number;
+}
+
 const sortFunctions = {
-    rank: (a: any, b: any, dir: OrderDir) => dir === 'asc' ? a.idx - b.idx : b.idx - a.idx,
-    year: (a: any, b: any, dir: OrderDir) => {
+    rank: (a: MovieWithIndex, b: MovieWithIndex, dir: OrderDir) => dir === 'asc' ? a.idx - b.idx : b.idx - a.idx,
+    year: (a: MovieWithIndex, b: MovieWithIndex, dir: OrderDir) => {
         const yearA = parseInt(a.release_date?.substring(0, 4) || '0', 10);
         const yearB = parseInt(b.release_date?.substring(0, 4) || '0', 10);
         return dir === 'asc' ? yearA - yearB : yearB - yearA;
     },
-    votos: (a: any, b: any, dir: OrderDir) =>
+    votos: (a: MovieWithIndex, b: MovieWithIndex, dir: OrderDir) =>
         dir === 'asc' ? a.vote_count - b.vote_count : b.vote_count - a.vote_count,
-    puntaje: (a: any, b: any, dir: OrderDir) =>
-        dir === 'asc' ? a.vote_average - b.vote_average : b.vote_average - a.vote_average
+    puntaje: (a: MovieWithIndex, b: MovieWithIndex, dir: OrderDir) =>
+        dir === 'asc' ? a.vote_average - b.vote_average : b.vote_average - a.vote_average,
+    titulo: (a: MovieWithIndex, b: MovieWithIndex, dir: OrderDir) => {
+        const titleA = a.title.toLowerCase();
+        const titleB = b.title.toLowerCase();
+        return dir === 'asc' 
+            ? titleA.localeCompare(titleB)
+            : titleB.localeCompare(titleA);
+    }
 };
 
 const Top100Table: React.FC = () => {
@@ -64,6 +83,7 @@ const Top100Table: React.FC = () => {
     }, [movies, orderBy, orderDir]);
 
     const handleSort = (col: OrderBy) => {
+        console.log('Ordenando por:', col, 'Estado actual:', orderBy, orderDir);
         if (orderBy === col) {
             setOrderDir((prev) => (prev === 'asc' ? 'desc' : 'asc'));
         } else {
@@ -89,8 +109,6 @@ const Top100Table: React.FC = () => {
                 headerHeight={54}
                 style={tableStyle}
                 hover
-                sortColumn={orderBy}
-                sortType={orderDir}
                 autoHeight
             >
                 <Column width={ isMobile ? 30 : 70} align="center" fixed>
@@ -98,14 +116,17 @@ const Top100Table: React.FC = () => {
                         style={{
                             color: 'var(--color-secundario)',
                             fontWeight: 700,
-                            cursor: 'pointer',
                             background: '#171717',
-                            letterSpacing: 1
+                            letterSpacing: 1,
+                            padding: 0
                         }}
-                        onClick={() => handleSort('rank')}
                     >
-                        #
-                       
+                        <div 
+                            onClick={() => handleSort('rank')}
+                            style={{ cursor: 'pointer', padding: '10px', width: '100%', height: '100%' }}
+                        >
+                            # {orderBy === 'rank' ? sortIcon(orderDir) : <SortIcon style={{ fontSize: '1.2rem' }}/> }
+                        </div>
                     </HeaderCell>
                     <Cell dataKey="idx" style={{ fontWeight: 700, color: '#fff', background: '#202020' }}>
                         {(rowData) => rowData.idx}
@@ -126,9 +147,22 @@ const Top100Table: React.FC = () => {
                     </Cell>
                 </Column>
                 <Column width={340} flexGrow={1}>
-                    <HeaderCell style={{
-                        color: 'var(--color-secundario)', fontWeight: 700, background: '#171717'
-                    }}>Título</HeaderCell>
+                    <HeaderCell 
+                        style={{
+                            color: 'var(--color-secundario)', 
+                            fontWeight: 700, 
+                            background: '#171717',
+                            padding: 0
+                        }}
+                    >
+                        <div 
+                            onClick={() => handleSort('titulo')}
+                            style={{ cursor: 'pointer', padding: '10px', width: '100%', height: '100%'}}
+                        >
+                           <span> Título </span>
+                            {orderBy === 'titulo' ? sortIcon(orderDir) : <SortIcon style={{ fontSize: '1.2rem' }}/> }
+                        </div>
+                    </HeaderCell>
                     <Cell style={{ background: '#202020' }}>
 
                         {(rowData: any) =>
@@ -146,18 +180,22 @@ const Top100Table: React.FC = () => {
 
                 {!isMobile && (
                     <>
-                        <Column width={120} align="center" sortable>
+                        <Column width={120} align="center">
                             <HeaderCell
                                 style={{
                                     color: 'var(--color-secundario)',
                                     fontWeight: 700,
-                                    cursor: 'pointer',
-                                    background: '#171717'
+                                    background: '#171717',
+                                    padding: 0
                                 }}
-                                onClick={() => handleSort('year')}
                             >
-                                Año
-                                {orderBy === 'year' && sortIcon(orderDir)}
+                                <div 
+                                    onClick={() => handleSort('year')}
+                                    style={{ cursor: 'pointer', padding: '10px', height: '100%' }}
+                                >
+                                    Año
+                                    {orderBy === 'year' ? sortIcon(orderDir) : <SortIcon style={{ fontSize: '1.2rem' }}/>}
+                                </div>
                             </HeaderCell>
                             <Cell style={{ color: '#fff', background: '#202020' }}>
                                 {(rowData: any) => rowData.release_date?.substring(0, 4)}

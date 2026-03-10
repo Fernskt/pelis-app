@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { useMoviesByType, useMoviesByGenre } from '../hooks/useMoviesList';
+import { useMoviesByType, useMoviesByGenre, useMoviesByActor, useActorDetail, useMoviesByDirector, useDirectorDetail } from '../hooks/useMoviesList';
 import { useGenres } from '../hooks/useGenres';
 import MovieGrid from '../components/MovieGrid';
 import { Loader, RadioGroup, Radio, Pagination } from 'rsuite';
@@ -23,7 +23,7 @@ const SORT_MAP = {
 const MoviesList: React.FC = () => {
     const { isXS, isSM } = useBreakpoint();
     const isMobile = isXS || isSM;
-    const { type, id } = useParams<{ type?: string; id?: string }>();
+    const { type, id, actorId, directorId } = useParams<{ type?: string; id?: string; actorId?: string; directorId?: string }>();
     const [order, setOrder] = React.useState<'default' | 'rating' | 'year'>('default');
     const [page, setPage] = React.useState(1);
 
@@ -33,6 +33,8 @@ const MoviesList: React.FC = () => {
     let title = 'Películas';
 
     const { data: genres, isLoading: isLoadingGenres } = useGenres();
+    const { data: actor, isLoading: isLoadingActor } = useActorDetail(actorId);
+    const { data: director, isLoading: isLoadingDirector } = useDirectorDetail(directorId);
 
     if (type) {
         moviesQuery = useMoviesByType(
@@ -53,12 +55,28 @@ const MoviesList: React.FC = () => {
                 ? `Películas de ${genreObj.name}`
                 : 'Películas por género';
     }
+    else if (actorId) {
+        moviesQuery = useMoviesByActor(actorId, SORT_MAP[order], page, minVotes);
+        title = isLoadingActor
+            ? 'Cargando...'
+            : actor
+                ? `Películas de ${actor.name}`
+                : 'Películas del actor';
+    }
+    else if (directorId) {
+        moviesQuery = useMoviesByDirector(directorId, SORT_MAP[order], page, minVotes);
+        title = isLoadingDirector
+            ? 'Cargando...'
+            : director
+                ? `Películas de ${director.name}`
+                : 'Películas del director';
+    }
 
     const { data, isLoading, isError } = moviesQuery || {};
 
     React.useEffect(() => {
         setPage(1);
-    }, [order, type, id]);
+    }, [order, type, id, actorId, directorId]);
 
     return (
         <section
