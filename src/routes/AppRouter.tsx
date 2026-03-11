@@ -6,6 +6,8 @@ import MoviesList from '../pages/MoviesList';
 import Top100 from '../pages/Top100';
 import About from '../pages/About';
 import ScrollToTop from '../components/ScrollToTop';
+import FAQs from '../pages/FAQs';
+import Help from '../pages/Help';
 
 const AppRouter = () => (
   <BrowserRouter>
@@ -22,6 +24,8 @@ const AppRouter = () => (
         <Route path="/year/:year" element={<MoviesList />} />
         <Route path="/top100" element={<Top100 />} />
         <Route path="/about" element={<About />} />
+        <Route path="/faqs" element={<FAQs />} />
+        <Route path="/help" element={<Help />} />
       </Route>
     </Routes>
   </BrowserRouter>

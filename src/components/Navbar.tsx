@@ -17,10 +17,14 @@ const excludeGenres = ["Aventura", "Familia", "Fantasía", "Romance", "Película
 const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = React.useState(false);
   const [showGenres, setShowGenres] = React.useState(false);
+  const [menuKey, setMenuKey] = React.useState(0);
   const { isXS, isSM } = useBreakpoint();
   const isMobile = isXS || isSM;
   const navigate = useNavigate();
-  const handleNavSearch = (q: string) => navigate(q ? `/?q=${encodeURIComponent(q)}` : '/');
+  const handleNavSearch = (q: string) => {
+    setMenuKey(prev => prev + 1);
+    navigate(q ? `/?q=${encodeURIComponent(q)}` : '/');
+  };
   const { data: genres } = useGenres();
 
   const filteredGenres = genres
@@ -62,6 +66,7 @@ const Navbar: React.FC = () => {
       {isMobile ? (
         <Nav pullRight>
           <Dropdown
+            key={menuKey}
             title={<MenuIcon style={{ fontSize: 18, color: 'var(--color-secundario)' }} />}
             placement="bottomEnd"
             noCaret
